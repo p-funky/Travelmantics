@@ -1,6 +1,7 @@
 package com.funky.p.travelmantics;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,15 +38,16 @@ public class ListActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.list_activity_menu, menu);
-        MenuItem insertMenu = menu.findItem(R.id.insert_menu);
-        Log.d("ADMIN: ", "" + FireBaseUtil.isAdmin);
-        if (FireBaseUtil.isAdmin == true) {
-            insertMenu.setVisible(true);
-        }
-        else {
-            insertMenu.setVisible(false);
-        }
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if(Build.VERSION.SDK_INT > 11) {
+            MenuItem insertMenu = menu.findItem(R.id.insert_menu);
+            insertMenu.setVisible(FireBaseUtil.isAdmin);
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
